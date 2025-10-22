@@ -3,6 +3,24 @@ data_f = open('./eva-data.json', 'r')
 data_t = open('./eva-data.csv','w')
 g_file = 'cumulative_eva_graph.png'
 
+
+def sum_duration_by_astronaut(data):
+    """Summarize total EVA duration by astronaut and save to CSV."""
+    import pandas as pd
+    df = pd.DataFrame(data)
+    df = df[['crew', 'duration']].dropna()
+    df['crew'] = df['crew'].str.split(';').apply(
+        lambda x: [i.strip() for i in x if i.strip()]
+    )
+    df = df.explode('crew')
+    df['duration_hours'] = df['duration'].str.split(':').apply(
+        lambda x: int(x[0]) + int(x[1]) / 60
+    )
+    result = df.groupby('crew')['duration_hours'].sum().reset_index()
+    result.to_csv('duration_by_astronaut.csv', index=False)
+    print("Saved summary to duration_by_astronaut.csv")
+    return result
+
 fieldnames = ("EVA #", "Country", "Crew    ", "Vehicle", "Date", "Duration", "Purpose")
 
 data=[]
