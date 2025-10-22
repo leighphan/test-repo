@@ -1,7 +1,1 @@
-# Spacewalks Analysis
-
-Quick start:
-
-1. uv python install
-2. uv sync
-3. uv run python eva_data_analysis.py
+This code takes input data for spacewalks instances, the agencies and countries involved, date and duractions and generates a chart
